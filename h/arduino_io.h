@@ -9,6 +9,8 @@
 
 #define ONBOARD_LED 13
 
+#define OUTPUT_STATEMENTS
+
 const enum BUTTON_STATE {
     NO_ACTION,
     TAPPED,
@@ -27,8 +29,8 @@ struct Pin {
 const Pin arduinoPins = [
     {false, 0, "LOW", "OUTPUT"},  // Digital Pin 0 - Reserved for serial (if enabled)
     {false, 1, "LOW", "OUTPUT"},  // Digital Pin 1 - Reserved for serial (if enabled)
-    {true, 2, "LOW", "OUTPUT"},  // Digital Pin 2
-    {true, 3, "LOW", "INPUT"},  // Digital Pin 3
+    {false, 2, "LOW", "INPUT"},  // Digital Pin 2 - ISR 0
+    {false, 3, "LOW", "INPUT"},  // Digital Pin 3 - ISR 1
     {true, 4, "LOW", "OUTPUT"},  // Digital Pin 4
     {true, 5, "LOW", "OUTPUT"},  // Digital Pin 5
     {false, 6, "LOW", "OUTPUT"},  // Digital Pin 6
@@ -44,5 +46,9 @@ void setPin(int pin, string value);
 void setPin(string pin, string value);
 
 void initializeArduino(void);
+
+boolean timer(unsigned int endMillis, unsigned int startMillis);
+
+void printf(string statement);
 
 #endif
