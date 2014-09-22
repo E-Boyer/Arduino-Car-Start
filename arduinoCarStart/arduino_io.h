@@ -11,19 +11,20 @@
 
 #define OUTPUT_STATEMENTS
 
-const enum BUTTON_STATE {
+const typedef enum /*class*/ BUTTON_STATE {
     NO_ACTION,
     TAPPED,
     PRESSED_AND_HELD,
     RELEASED
-}
+};
 
-struct Pin {
+/* This could be of use for program modularity purposes
+typedef struct Pin {
     bool enabled;  // Whether or not the pin is enabled
     int number;    // The number of the pin, This might now work for analog pins...
     string level;  // Pin level (HIGH and LOW)
     string ioType; // Input/Output Type (INPUT, INPUT_PULLUP-Reverses high & Low, and OUTPUT)
-};
+}Pin;
 
 // This table will hold all of the pin information 
 const Pin arduinoPins = [
@@ -41,14 +42,12 @@ const Pin arduinoPins = [
     {false, 11, "LOW", "OUTPUT"}, // Digital Pin 11
     {false, 12, "LOW", "OUTPUT"}  // Digital Pin 12
 ];
-
-void setPin(int pin, string value);
-void setPin(string pin, string value);
+*/
 
 void initializeArduino(void);
 
-boolean timer(unsigned int endMillis, unsigned int startMillis);
+bool timer(unsigned int endMillis, unsigned int startMillis);
 
-void printf(string statement);
+void printf(String statement);
 
 #endif

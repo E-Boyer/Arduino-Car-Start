@@ -17,23 +17,23 @@ static const unsigned int MOTOR_PRIME_TIMER = 1500; // milliseconds
 // If button is pressed for less than this amount in milliseconds, it is considered a Tap.
 static const unsigned int BTN_TAP_TIME = 1500; 
 
-static enum carState{
+static typedef enum carState{
     OFF,
     ACC,
     ON,
     LISTENING
-}
+};
 
 enum carState CAR = OFF;
 enum rfidState RFID = INVALID;
 
-static enum rfidState readRFID(void){
+static enum rfidState readRFID(){
     // Check database and see if RFID tag is white-listed.
     RFID = readRFIDTag();
     return RFID;
 }
 
-static enum carState getCarState(void){
+static enum carState getCarState(){
     return CAR;
 }
 
@@ -45,7 +45,7 @@ static void setCarState(enum carState newState){
 /* startBtnListener
    Start listening for input from the push button
 */
-static void startBtnListener(void){
+static void startBtnListener(){
     unsigned long startMillis = millis();
     if(getCarState() == OFF){
         setCarState(LISTENING);
@@ -70,8 +70,8 @@ static void startBtnListener(void){
  * This function checks to see if the button is just being tapped, or if it's being pressed and held.
 */
 static enum BUTTON_STATE buttonListener(int btn){    
-    unsigned long btnTime = pulseIn(btn, HIGH, BTN_TAP_TIME);
-    if(btnTime != 0){
+    unsigned long btnTime = pulseIn(btn, HIGH, BTN_TAP_TIME*1000);
+    if((btnTime != 0) && (btnTime < (BTN_TAP_TIME*1000))){
         return TAPPED;
     }
     
@@ -85,7 +85,7 @@ static enum BUTTON_STATE btnListen(int btn){
     return RELEASED;
 }
 
-static void carStart(void){
+static void carStart(){
     unsigned int startMilli = millis();
     
     // Prime the motor with fuel
@@ -106,7 +106,7 @@ static void carStart(void){
     return;
 }
 
-static void carOff(void){
+static void carOff(){
     digitalWrite(STARTER_PIN, LOW);
     digitalWrite(ACC_PIN, LOW);
     digitalWrite(ON_PIN, LOW);
@@ -116,7 +116,7 @@ static void carOff(void){
     return;
 }
 
-static void carAcc(void){
+static void carAcc(){
     digitalWrite(ACC_PIN, HIGH);
     setCarState(ACC);
     return;
@@ -125,10 +125,10 @@ static void carAcc(void){
 /* initialize
  * Do any necessary startup initialization for Arduino
  */
-void initialize(void){
+void initialize(){
 }
 
-void loopRunner(void){
+void loopRunner(){
     if(getCarState() == OFF){
         switch(readRFID()){
             case MASTER:

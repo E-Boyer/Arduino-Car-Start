@@ -17,14 +17,6 @@ void initializeArduino(void){
     Serial.begin(9600);
 }
 
-void setPin(int pin, string value){
-    digitalWrite(pin, value);
-}
-
-void setPin(string pin, string value){
-    analogWrite(pin, value);
-}
-
 /* timer
    Function to act as a countdown timer.
    endMillis - How long the timer should run (in milliseconds)
@@ -34,7 +26,7 @@ void setPin(string pin, string value){
    
    "abs" explanation: millis() overflows after ~50 days, so in the event that it overflows then it'll end the timer.
 */
-boolean timer(unsigned int endMillis, unsigned int startMillis){
+bool timer(unsigned int endMillis, unsigned int startMillis){
     if(abs(millis() - startMillis) < endMillis){
         return true; // Timer isn't finished yet
     }
@@ -44,7 +36,7 @@ boolean timer(unsigned int endMillis, unsigned int startMillis){
 /* printf
  * Print out a message to the console.
  */
-void printf(string statement){
+void printf(String statement){
 #ifdef OUTPUT_STATEMENTS
     Serial.println(statement);
     Serial.println("\r\n");
