@@ -11,12 +11,12 @@
 
 #define OUTPUT_STATEMENTS
 
-const typedef enum /*class*/ BUTTON_STATE {
+typedef enum {
     NO_ACTION,
     TAPPED,
     PRESSED_AND_HELD,
     RELEASED
-};
+} BUTTON_STATE;
 
 /* This could be of use for program modularity purposes
 typedef struct Pin {
@@ -48,6 +48,6 @@ void initializeArduino(void);
 
 bool timer(unsigned int endMillis, unsigned int startMillis);
 
-void printf(String statement);
+//void printf(String statement);
 
 #endif

@@ -6,16 +6,16 @@
 #ifndef RFID_H
 #define RFID_H
 
-enum rfidState {
+typedef enum {
     INVALID,
     VALID,
     VALIDATED,
     MASTER
-}
+} rfidState;
 
 const unsigned int rfidTimeout = 30000; // Milliseconds
 
-enum rfidState readRFIDTag(void);
+rfidState readRFIDTag();
 
 
 #endif

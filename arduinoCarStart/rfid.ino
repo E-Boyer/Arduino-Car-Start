@@ -5,7 +5,7 @@
 
 #include "rfid.h"
 
-enum rfidState readRFIDTag(void){
+rfidState readRFIDTag(void){
         
     return INVALID;
 }

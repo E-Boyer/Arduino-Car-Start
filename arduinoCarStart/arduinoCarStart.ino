@@ -31,17 +31,18 @@ Input
 #include "arduino_io.h"
 
 #include "carStart.h"
+#include "rfid.h"
 
 /* Ftn: Setup
  * Desc: put your setup code here, to run once */
-void setup(void){
+void setup(){
     initializeArduino();
     initialize();
 }
 
 /* Ftn: loop
  * Desc: put your main code here, to run repeatedly  */
-void loop(void){
+void loop(){
     loopRunner();
     delay(250);
 }

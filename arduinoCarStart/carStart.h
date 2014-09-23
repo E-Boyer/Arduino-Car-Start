@@ -1,7 +1,16 @@
 #ifndef CARSTART_H
 #define CARSTART_H
 
-void initialize(void);
-void loopRunner(void);
+typedef enum {
+    OFF,
+    ACC,
+    ON,
+    LISTENING
+} carState;
+
+void initialize();
+void loopRunner();
+
+void carAction(carState car_state, BUTTON_STATE btn_state);
 
 #endif

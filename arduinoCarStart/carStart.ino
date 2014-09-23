@@ -6,10 +6,10 @@
 #include "arduino_io.h"
 #include "rfid.h"
 
-#define ACC_PIN     arduinoPins[4].number
-#define ON_PIN      arduinoPins[5].number
-#define STARTER_PIN arduinoPins[2].number
-#define START_BUTTON arduinoPins[3].number
+#define ACC_PIN     2 //arduinoPins[4].number
+#define ON_PIN      3 //arduinoPins[5].number
+#define STARTER_PIN 4 //arduinoPins[2].number
+#define START_BUTTON 5 //arduinoPins[3].number
 
 static const unsigned int RFID_READ_TIMEOUT = 30000; // milliseconds
 static const unsigned int MOTOR_PRIME_TIMER = 1500; // milliseconds
@@ -17,30 +17,25 @@ static const unsigned int MOTOR_PRIME_TIMER = 1500; // milliseconds
 // If button is pressed for less than this amount in milliseconds, it is considered a Tap.
 static const unsigned int BTN_TAP_TIME = 1500; 
 
-static typedef enum carState{
-    OFF,
-    ACC,
-    ON,
-    LISTENING
-};
+carState CAR = OFF;
+rfidState RFID = INVALID;
 
-enum carState CAR = OFF;
-enum rfidState RFID = INVALID;
-
-static enum rfidState readRFID(){
+static rfidState readRFID(){
     // Check database and see if RFID tag is white-listed.
     RFID = readRFIDTag();
     return RFID;
 }
 
-static enum carState getCarState(){
+static carState getCarState(){
     return CAR;
 }
 
-static void setCarState(enum carState newState){
+static void setCarState(carState newState){
     CAR = newState;
     return;
 }
+
+void carAction(carState car_state, BUTTON_STATE btn_state);
 
 /* startBtnListener
    Start listening for input from the push button
@@ -54,7 +49,7 @@ static void startBtnListener(){
     
     // Start a timer for RFID Reader, if this times out then user must rescan RFID Tag
     while(timer(RFID_READ_TIMEOUT, startMillis)){
-        carAction(getCarState(), buttonListener());
+        carAction(getCarState(), buttonListener(START_BUTTON));
     }
     
     if(getCarState() == LISTENING){
@@ -69,7 +64,7 @@ static void startBtnListener(){
 /* buttonListener
  * This function checks to see if the button is just being tapped, or if it's being pressed and held.
 */
-static enum BUTTON_STATE buttonListener(int btn){    
+static BUTTON_STATE buttonListener(int btn){    
     unsigned long btnTime = pulseIn(btn, HIGH, BTN_TAP_TIME*1000);
     if((btnTime != 0) && (btnTime < (BTN_TAP_TIME*1000))){
         return TAPPED;
@@ -78,7 +73,7 @@ static enum BUTTON_STATE buttonListener(int btn){
     return btnListen(btn);
 }
 
-static enum BUTTON_STATE btnListen(int btn){
+static BUTTON_STATE btnListen(int btn){
     if(digitalRead(btn) == HIGH){
         return PRESSED_AND_HELD;
     }
@@ -89,7 +84,7 @@ static void carStart(){
     unsigned int startMilli = millis();
     
     // Prime the motor with fuel
-    while(timer(MOTOR_PRIME_TIMER, startMilli){
+    while(timer(MOTOR_PRIME_TIMER, startMilli)){
         digitalWrite(ON_PIN, HIGH);
     }
     
@@ -148,8 +143,7 @@ void loopRunner(){
     }
 }
 
-
-void carAction(enum carState car_state, enum BUTTON_STATE btn_state){
+void carAction(carState car_state, BUTTON_STATE btn_state){
     if(RFID){
         switch(car_state){
             case OFF:
@@ -157,12 +151,12 @@ void carAction(enum carState car_state, enum BUTTON_STATE btn_state){
                     carStart(); // Start car
                 }
                 else if(btn_state == TAPPED){
-                    changeCarState(ACC);
+                    carAcc();
                 }
                 break;
             case ACC:
                 if(btn_state == PRESSED_AND_HELD){
-                    carStart(): // Start Car
+                    carStart(); // Start Car
                 }
                 else if(btn_state == TAPPED){
                     carOff(); // Turn car off & set RFID = INVALID (after a timer)
@@ -179,3 +173,4 @@ void carAction(enum carState car_state, enum BUTTON_STATE btn_state){
     }
     return;
 }
+
