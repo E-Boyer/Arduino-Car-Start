@@ -5,6 +5,12 @@
 
 #include "rfid.h"
 
+// Read from EEPROM
+// http://arduino.cc/en/Reference/EEPROMRead
+
+// Write to EEPROM  (100,000 write/erase cycles...)
+// http://arduino.cc/en/Reference/EEPROMWrite
+
 // Store new RFID Tag ID's
 static boolean saveTag(int id){
     return false;
@@ -27,6 +33,8 @@ rfidState readRFIDTag(){
         return VALID;
     }
 #endif
+
+    // Check list of valid RFID Tags
+    
     return INVALID;
 }
-

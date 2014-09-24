@@ -84,7 +84,8 @@ static BUTTON_STATE btnStatef(int btn){
 }
 
 /* Ftn: carStart
-   Desc: 
+   Desc: This function does a couple things. It puts the car into ON mode for MOTOR_PRIME_TIMER 
+         milliseconds, then it activates the Starter Pin while the user holds down the button.
 */
 static void carStart(){
     unsigned int startMilli = millis();
@@ -100,6 +101,7 @@ static void carStart(){
     
     while(btnStatef(START_BUTTON) == PRESSED_AND_HELD){
         digitalWrite(STARTER_PIN, HIGH);
+        delay(50);
     }
     digitalWrite(ON_PIN, HIGH);
     digitalWrite(ACC_PIN, HIGH);
@@ -175,8 +177,8 @@ void loopRunner(){
 }
 
 /* Ftn: carAction
-   Desc: Performs an action based on the current state of the car and 
-         input from the start button by the user.
+   Desc: Performs an action based on the current state of the car and input from the start button
+         by the user.
 */
 void carAction(carState car_state, BUTTON_STATE btn_state){
     if(RFID){

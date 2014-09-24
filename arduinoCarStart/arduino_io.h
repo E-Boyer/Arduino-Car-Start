@@ -7,8 +7,8 @@
 #ifndef ARDUINO_IO_H
 #define ARDUINO_IO_H
 
-//https://github.com/arduino/Arduino/blob/master/hardware/arduino/cores/arduino/Arduino.h
-#include <Arduino.h> 
+#include <Arduino.h> // https://github.com/arduino/Arduino/blob/master/hardware/arduino/cores/arduino/Arduino.h
+#include <EEPROM.h>  // http://www.arduino.cc/en/Reference/EEPROM
 
 #define OUTPUT_STATEMENTS
 // Find the number of elements in an array
