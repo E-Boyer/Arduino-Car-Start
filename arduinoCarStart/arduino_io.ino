@@ -7,11 +7,11 @@
 #include "arduino_io.h"
 
 void initializeArduino(void){
-    /*for(int i = 0; i < arduinoPins.size(); i++){
+    for(int i = 0; i < NELEMS(arduinoPins); i++){
         if(arduinoPins[i].enabled){
             pinMode(arduinoPins[i].number, arduinoPins[i].ioType);
         }
-    }*/
+    }
     
     // open the serial port at 9600 bps:
     Serial.begin(9600);

@@ -1,4 +1,1 @@
 ToDo:
-  -Setup simulation circuitry - DONE
-  -Order RFID board and a few tags
-  -Debug current code so that it compiles

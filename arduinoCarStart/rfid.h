@@ -7,7 +7,7 @@
 #define RFID_H
 
 typedef enum {
-    INVALID,
+    INVALID, // Invalid RFID Tag has been read
     VALID,
     VALIDATED,
     MASTER
@@ -16,6 +16,5 @@ typedef enum {
 const unsigned int rfidTimeout = 30000; // Milliseconds
 
 rfidState readRFIDTag();
-
 
 #endif
