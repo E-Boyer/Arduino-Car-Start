@@ -62,6 +62,7 @@ static void rfidTimer(){
     // Start a timer for RFID Reader, if this times out then user must rescan RFID Tag
     while(timer(RFID_READ_TIMEOUT, startMillis) && (getCarState() == LISTENING)){
         carAction(getCarState(), buttonListener(START_BUTTON));
+        delay(50); // Small delay.
     }
     
     if(getCarState() == LISTENING){
@@ -91,12 +92,35 @@ static BUTTON_STATE buttonListener(int btn){
     return NO_ACTION;
 }
 
+/* Ftn: debouncef
+   Desc: Function for doing some button debouncing. This is for 'cleaner' input from the user
+*/
+static boolean debouncef(int btn){
+    int state = digitalRead(btn); // Store current state of button.
+    int bounceStartTime = millis();
+    
+    while(timer(DEBOUNCE_TIME, bounceStartTime)){
+        delay(10); // Not sure if this delay should be here...
+    }
+    
+    // Check if button is still in same state, if so return true (Good button press).
+    if(state = digitalRead(btn){
+        return true;
+    }
+    return false;
+}
+
 /* Ftn: btnStatef
    Desc: Function for returning the current state of the specified button
 */
 static BUTTON_STATE btnStatef(int btn){
     if(digitalRead(btn) == HIGH){
-        return PRESSED_AND_HELD;
+        if(debouncef(btn)){
+            return PRESSED_AND_HELD;
+        }
+        else{
+            return NO_ACTION;
+        }
     }
     return RELEASED;
 }
@@ -247,7 +271,7 @@ void carAction(carState car_state, BUTTON_STATE btn_state){
      -Set Timeout or ## Allowed Car Starts
 */
 void valetMode(){
-    // Read Master Tag (?)
+    // Read Master Tag (?) - Have a separate Valet Tag
     // Wait for 10 Second button press or Tap it XX times
     
     // Signal user that car is now in Valet Mode
