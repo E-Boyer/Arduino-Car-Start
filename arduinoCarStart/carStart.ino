@@ -19,13 +19,13 @@
 #define CLUTCH_PIN   arduinoPins[7].number // Ground this pin to start the car
 #define ONBOARD_LED  arduinoPins[13].number
 
-#define RFID_READ_TIMEOUT = 30000; // milliseconds - Timeout for the RFID Reader if it reads a valid tag.
-#define MOTOR_PRIME_TIMER = 2000;  // milliseconds - Time to prime the motor with fuel
+const static unsigned int RFID_READ_TIMEOUT = 30000; // milliseconds - Timeout for the RFID Reader if it reads a valid tag.
+const static unsigned int MOTOR_PRIME_TIMER = 2000;  // milliseconds - Time to prime the motor with fuel
 
 // If button is pressed for less than this amount in milliseconds, it is considered a Tap.
-#define BTN_TAP_TIME = 1500; 
+unsigned int BTN_TAP_TIME = 1500; 
 
-#define DEBOUNCE_TIME = 50; // milliseconds - Button Debounce time
+const static unsigned int DEBOUNCE_TIME = 50; // milliseconds - Button Debounce time
 
 // Variable to store the current state of the vehicle.
 static carState CAR = OFF;
@@ -104,7 +104,7 @@ static boolean debouncef(int btn){
     }
     
     // Check if button is still in same state, if so return true (Good button press).
-    if(state = digitalRead(btn){
+    if(state = digitalRead(btn)){
         return true;
     }
     return false;
