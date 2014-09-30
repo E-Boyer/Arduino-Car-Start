@@ -13,7 +13,7 @@ typedef enum {
     MASTER
 } rfidState;
 
-const unsigned int rfidTimeout = 30000; // Milliseconds
+const static unsigned int RFID_READ_TIMEOUT = 30000; // milliseconds - Timeout for the RFID Reader if it reads a valid tag.
 
 rfidState readRFIDTag();
 void initRFIDReader();

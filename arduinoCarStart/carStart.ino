@@ -18,7 +18,6 @@
 // #define CLUTCH_PIN arduinoPins[12].number // Ground this pin to start the car
 #define ONBOARD_LED  arduinoPins[13].number
 
-const static unsigned int RFID_READ_TIMEOUT = 30000; // milliseconds - Timeout for the RFID Reader if it reads a valid tag.
 const static unsigned int MOTOR_PRIME_TIMER = 2000;  // milliseconds - Time to prime the motor with fuel
 
 // If button is pressed for less than this amount in milliseconds, it is considered a Tap.
