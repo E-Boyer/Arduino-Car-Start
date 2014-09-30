@@ -38,3 +38,6 @@ rfidState readRFIDTag(){
     
     return INVALID;
 }
+
+void initRFIDReader(){
+}

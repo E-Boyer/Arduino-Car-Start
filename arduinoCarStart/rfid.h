@@ -16,5 +16,6 @@ typedef enum {
 const unsigned int rfidTimeout = 30000; // Milliseconds
 
 rfidState readRFIDTag();
+void initRFIDReader();
 
 #endif

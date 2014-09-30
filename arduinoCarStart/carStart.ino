@@ -88,7 +88,7 @@ static BUTTON_STATE buttonListener(int btn){
     if((btnTime != 0) && (btnTime < tapMicroSec)){
         printf("Button TAPPED.");
         return TAPPED;
-    }else if(digitalRead(START_BUTTON) == HIGH){
+    }else if(digitalRead(btn) == HIGH){
         return btnStatef(btn);
     }
     return NO_ACTION;
@@ -142,17 +142,16 @@ static void carStart(){
         digitalWrite(ON_PIN2, HIGH);
     }
     
-    digitalWrite(ON_PIN1, LOW);
-    digitalWrite(ON_PIN2, LOW);
-    
     while(btnStatef(START_BUTTON) == PRESSED_AND_HELD){
+        digitalWrite(ON_PIN1, LOW);
+        digitalWrite(ON_PIN2, LOW);
         digitalWrite(STARTER_PIN, HIGH);
         delay(50);
     }
+    
     digitalWrite(ON_PIN1, HIGH);
     digitalWrite(ON_PIN2, HIGH);
     digitalWrite(ACC_PIN, HIGH);
-    
     digitalWrite(STARTER_PIN, LOW);
     
     setCarState(ON);
@@ -225,6 +224,7 @@ static boolean clutchPinf(){
  * Desc: Do any necessary project specific startup initialization for Arduino
  */
 void initializeApp(){
+    initRFIDReader();
 }
 
 /* Ftn: loopRunner
