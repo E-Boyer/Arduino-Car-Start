@@ -8,11 +8,12 @@ To Do List:
  -POSSIBLE ISSUE
    -PulseIn, will it return after the timeout or does it wait for the button to be released??
    -Do I also need to add some button debouncing to my btnStatef function?
-   
+
 Input
+ -RFID Reading/Learning
+Output
  -System Activation/Deactivation alerts (Auditory/Visual)
  -System Status (?)
- -RFID Reading/Learning
   
  -Emergency Killswitch (For track use)
  
@@ -37,13 +38,13 @@ Input
  * Desc: put your setup code here, to run once */
 void setup(){
     initializeArduino();
-    initialize();
+    initializeApp();
 }
 
 /* Ftn: loop
  * Desc: put your main code here, to run repeatedly  */
 void loop(){
     loopRunner();
-    delay(200);
+    delay(100);
 }
 

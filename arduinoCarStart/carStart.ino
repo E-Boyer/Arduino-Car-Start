@@ -7,23 +7,22 @@
 #include "carStart.h"
 #include "rfid.h"
 
-// Uncomment this to use a pin to check if the clutch is pushed in or not.
-// #define CLUTCH_SAFETY_CHECK
-
 #define START_BUTTON arduinoPins[2].number
 // For race tracks where an external killswitch is required. (This will not disable the battery.)
 // #define EMERGENCY_KILLSWITCH 3
 #define ACC_PIN      arduinoPins[4].number
-#define ON_PIN       arduinoPins[5].number
-#define STARTER_PIN  arduinoPins[6].number
-#define CLUTCH_PIN   arduinoPins[7].number // Ground this pin to start the car
+#define ON_PIN1      arduinoPins[5].number
+#define ON_PIN2      arduinoPins[6].number
+#define STARTER_PIN  arduinoPins[7].number
+// Uncomment this to use a pin to check if the clutch is pushed in or not.
+// #define CLUTCH_PIN arduinoPins[12].number // Ground this pin to start the car
 #define ONBOARD_LED  arduinoPins[13].number
 
 const static unsigned int RFID_READ_TIMEOUT = 30000; // milliseconds - Timeout for the RFID Reader if it reads a valid tag.
 const static unsigned int MOTOR_PRIME_TIMER = 2000;  // milliseconds - Time to prime the motor with fuel
 
 // If button is pressed for less than this amount in milliseconds, it is considered a Tap.
-unsigned int BTN_TAP_TIME = 1500; 
+const static unsigned int BTN_TAP_TIME = 1500; 
 
 const static unsigned int DEBOUNCE_TIME = 50; // milliseconds - Button Debounce time
 
@@ -34,6 +33,9 @@ static rfidState RFID = INVALID;
 
 static rfidState readRFID(){
     // Check database and see if RFID tag is white-listed.
+    if(RFID == VALIDATED){
+        return RFID;
+    }
     RFID = readRFIDTag();
     return RFID;
 }
@@ -62,7 +64,7 @@ static void rfidTimer(){
     // Start a timer for RFID Reader, if this times out then user must rescan RFID Tag
     while(timer(RFID_READ_TIMEOUT, startMillis) && (getCarState() == LISTENING)){
         carAction(getCarState(), buttonListener(START_BUTTON));
-        delay(50); // Small delay.
+        delay(25); // Small delay.
     }
     
     if(getCarState() == LISTENING){
@@ -104,7 +106,7 @@ static boolean debouncef(int btn){
     }
     
     // Check if button is still in same state, if so return true (Good button press).
-    if(state = digitalRead(btn)){
+    if(state == digitalRead(btn)){
         return true;
     }
     return false;
@@ -136,16 +138,19 @@ static void carStart(){
     
     // Prime the motor with fuel
     while(timer(MOTOR_PRIME_TIMER, startMilli) && (btnStatef(START_BUTTON) == PRESSED_AND_HELD)){
-        digitalWrite(ON_PIN, HIGH);
+        digitalWrite(ON_PIN1, HIGH);
+        digitalWrite(ON_PIN2, HIGH);
     }
     
-    digitalWrite(ON_PIN, LOW);
+    digitalWrite(ON_PIN1, LOW);
+    digitalWrite(ON_PIN2, LOW);
     
     while(btnStatef(START_BUTTON) == PRESSED_AND_HELD){
         digitalWrite(STARTER_PIN, HIGH);
         delay(50);
     }
-    digitalWrite(ON_PIN, HIGH);
+    digitalWrite(ON_PIN1, HIGH);
+    digitalWrite(ON_PIN2, HIGH);
     digitalWrite(ACC_PIN, HIGH);
     
     digitalWrite(STARTER_PIN, LOW);
@@ -162,7 +167,8 @@ static void carOff(){
 
     digitalWrite(STARTER_PIN, LOW);
     digitalWrite(ACC_PIN, LOW);
-    digitalWrite(ON_PIN, LOW);
+    digitalWrite(ON_PIN1, LOW);
+    digitalWrite(ON_PIN2, LOW);
     
     setCarState(OFF);
     rfidTimer();
@@ -193,6 +199,7 @@ static void listenForRFID(){
             rfidTimer();
             break;
         case VALIDATED:
+            carAction(getCarState(), buttonListener(START_BUTTON));
             break;
         case INVALID:
         default:
@@ -205,9 +212,9 @@ static void listenForRFID(){
    Desc: Checks to see if the clutch is pressed in or not.
    Returns true if clutch is pressed in, false otherwise.
 */
-static boolean clutchPinf(int pin){
-#ifdef CLUTCH_SAFETY_CHECK
-    if(digitalRead(pin) == LOW){
+static boolean clutchPinf(){
+#ifdef CLUTCH_PIN
+    if(digitalRead(CLUTCH_PIN) == LOW){
         return false; // clutch is let out
     }
 #endif
@@ -217,18 +224,14 @@ static boolean clutchPinf(int pin){
 /* Ftn: initialize
  * Desc: Do any necessary project specific startup initialization for Arduino
  */
-void initialize(){
+void initializeApp(){
 }
 
 /* Ftn: loopRunner
    Desc: Function that is looped through indefinitely by the Arduino
 */
 void loopRunner(){
-    if(getCarState() == OFF){
-        listenForRFID();
-    }else if(RFID == VALIDATED){
-        carAction(getCarState(), buttonListener(START_BUTTON));
-    }
+    listenForRFID();
 }
 
 /* Ftn: carAction
@@ -239,7 +242,7 @@ void carAction(carState car_state, BUTTON_STATE btn_state){
     if(RFID){
         switch(car_state){
             case OFF:
-                if((btn_state == PRESSED_AND_HELD)  && clutchPinf(CLUTCH_PIN)){
+                if((btn_state == PRESSED_AND_HELD)  && clutchPinf()){
                     carStart(); // Start car
                 }
                 else if(btn_state == TAPPED){
@@ -247,7 +250,7 @@ void carAction(carState car_state, BUTTON_STATE btn_state){
                 }
                 break;
             case ACC:
-                if((btn_state == PRESSED_AND_HELD) && clutchPinf(CLUTCH_PIN)){
+                if((btn_state == PRESSED_AND_HELD) && clutchPinf()){
                     carStart(); // Start Car
                 }
                 else if(btn_state == TAPPED){

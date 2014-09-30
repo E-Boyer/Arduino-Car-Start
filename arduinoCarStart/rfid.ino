@@ -5,6 +5,8 @@
 
 #include "rfid.h"
 
+#define RFID_TEST_BUTTON 11 // For DEVELOPMENT PURPOSES ONLY
+
 // Read from EEPROM
 // http://arduino.cc/en/Reference/EEPROMRead
 
@@ -23,8 +25,6 @@ static void deleteTag(int id){
 // Clear all tags, then store all new ones within range
 static void clearAll(){
 }
-
-#define RFID_TEST_BUTTON 8 // For DEVELOPMENT PURPOSES ONLY
 
 // Read the RFID tag from RFID reader
 rfidState readRFIDTag(){
