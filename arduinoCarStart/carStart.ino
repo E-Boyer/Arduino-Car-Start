@@ -50,8 +50,8 @@ static void setCarState(carState newState){
 
 void carAction(carState car_state, BUTTON_STATE btn_state);
 
-/* rfidTimer
-   Start listening for input from the push button
+/* Ftn: rfidTimer
+   Desc: Start listening for input from the push button
 */
 static void rfidTimer(){
     unsigned long startMillis = millis();
@@ -76,8 +76,8 @@ static void rfidTimer(){
     return;
 }
 
-/* buttonListener
- * This function checks to see if the button is just being tapped, or if it's being pressed and held.
+/* Ftn: buttonListener
+ * Desc: This function checks to see if the button is just being tapped, or if it's being pressed and held.
 */
 static BUTTON_STATE buttonListener(int btn){
     // Convert the Tapped Timeout from millisecond to microsecond
@@ -258,10 +258,20 @@ void carAction(carState car_state, BUTTON_STATE btn_state){
                 }
                 break;
             case ON:
+#ifdef CLUTCH_PIN
+                if(btn_state == PRESSED_AND_HELD){
+                    if(clutchPinf()){
+                        carStart();
+                    }else{
+                        carOff(); // Turn car off & set RFID = INVALID
+                    }
+                }
+#else
                 if(btn_state == PRESSED_AND_HELD){
                     carOff(); // Turn car off & set RFID = INVALID
                 }
-            case LISTENING:
+#endif
+                break;
             default:
                 break;
         }
