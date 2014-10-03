@@ -9,13 +9,12 @@
 
 #include <Arduino.h> // https://github.com/arduino/Arduino/blob/master/hardware/arduino/cores/arduino/Arduino.h
 #include <EEPROM.h>  // http://www.arduino.cc/en/Reference/EEPROM
-// #include "Timer.h" // http://playground.arduino.cc/Code/Timer
+// #include "Timer.h"   // http://playground.arduino.cc/Code/Timer
 
 // Definition used to determine if Serial Output statements should be enabled or not
 #define OUTPUT_STATEMENTS
 // Find the number of elements in an array
 #define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
-
 
 typedef enum {
     NO_ACTION,
@@ -30,7 +29,7 @@ typedef struct Pin {
     byte number;  // The number of the pin, This might not work for analog pins...
     byte level;   // Pin level (HIGH and LOW)
     byte ioType;  // Input/Output Type (INPUT, INPUT_PULLUP-Reverses high & Low, and OUTPUT)
-}Pin;
+} Pin;
 
 // This table will hold all of the pin information 
 const Pin arduinoPins[] = {                                                         /* App Specific Purpose */

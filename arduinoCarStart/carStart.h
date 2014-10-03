@@ -15,14 +15,12 @@ void loopRunner();
  Ftn: carAction
  
  State Machine Logic
- off -(Press & Hold)-> On -> Starter -> On -(Tap)-> off 
-     |                       ^          |            ^
-     |                       | -------- <            |
-     |                      (Press & Hold)           |
-     v                                               |
-   (Tap) -> Acc -(Tap)-------------------------------^
-                |
-                --(Press & Hold)--> On
+ off -(Press & Hold)-> On -> Starter -> On -(Press & Hold)-> off 
+     |       ^               ^          |                     ^
+     |       |               | -------- <                     |
+     |       |              (Press & Hold w/ clutch)          |
+     v       |                                                |
+   (Tap) -> Acc -> (Tap) -------------------------------------^
  ****************************************************************************/
 void carAction(carState car_state, BUTTON_STATE btn_state);
 
