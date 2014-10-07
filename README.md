@@ -12,11 +12,10 @@ Hardware List:
 Arduino Uno
 Wiring diagram of your car's ignition. (Or a friend that has some wiring experience).
 Current Board Pin Information
-    #define START_BUTTON - Pin 2
-    
-    #define ACC_PIN      - Pin 4
-    #define ON_PIN1      - Pin 5
-    #define ON_PIN2      - Pin 6
-    #define STARTER_PIN  - Pin 7
+    START_BUTTON - Digital Pin 2
+    ACC_PIN      - Digital Pin 4
+    ON_PIN1      - Digital Pin 5
+    ON_PIN2      - Digital Pin 6
+    STARTER_PIN  - Digital Pin 7
 
 I still need to do a wiring diagram for relays that'll power the car along with a 12v -> 5v converter that'll power the Aruino.
