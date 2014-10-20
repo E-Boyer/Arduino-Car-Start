@@ -3,7 +3,7 @@ Arduino-Car-Start
 
 This is a project that'll allow you to start your car via pushbutton using either bluetooth or RFID for authentication.
 
-Note: This project is IN DEVELOPMENT and such I include no warranty (not like it'll get a warranty anyways). 
+Note: This project is IN DEVELOPMENT and as such I include no warranty (not like it'll get a warranty anyway). 
 I will update this file when I have a stable release of code.
 
 Please ask before you download and start modifying this, although if you start modifying it and make it better, I won't be mad. :)
@@ -18,4 +18,4 @@ Current Board Pin Information
     ON_PIN2      - Digital Pin 6
     STARTER_PIN  - Digital Pin 7
 
-I still need to do a wiring diagram for relays that'll power the car along with a 12v -> 5v converter that'll power the Aruino.
+I still need to do a wiring diagram for relays that'll power the car along with a 12v -> 5v converter that'll power the Arduino.
